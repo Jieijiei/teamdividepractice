@@ -41,71 +41,71 @@ for(var i = 0; i < Math.floor(group / 2); i++){
     $('#result-right').children('ul').last().append("<li class='shuffle-area'></li>");
     }
 
-    function start(){
-        var memberArray = [];
-        var row = $('#tbody').children().length;
-        for(var i = 0; i < row; i++){
-          memberArray.push($('#tbody').find('td').eq(2 * i).text());
-        }
-        roulette = setInterval(function(){
-          var random = Math.floor(Math.random() * memberArray.length);
-          var shuffleArea = $('.shuffle-area');
-          var count = shuffleArea.length;
-          for(var i = 0; i < count; i++){
-            shuffleArea.eq(i).text(memberArray[(random + i) % count]);
-          }
-        }, 10);
+function start(){
+    var memberArray = [];
+    var row = $('#tbody').children().length;
+    for(var i = 0; i < row; i++){
+      memberArray.push($('#tbody').find('td').eq(2 * i).text());
+    }
+    roulette = setInterval(function(){
+      var random = Math.floor(Math.random() * memberArray.length);
+      var shuffleArea = $('.shuffle-area');
+      var count = shuffleArea.length;
+      for(var i = 0; i < count; i++){
+        shuffleArea.eq(i).text(memberArray[(random + i) % count]);
       }
+    }, 10);
+  }
 
-      function stop(){
-        clearInterval(roulette);
-        var status = true;
-        var group = parseInt(document.getElementById('group').value);
-        var memberArray = [];
-        var copyArray = [];
-        var groupArray = new Array(group);
-        var row = $('#tbody').children().length;
-      
-        for(var i = 0; i < row; i++){
-          var name = $('#tbody').find('td').eq(2 * i).text();
-          var department = $('#tbody').find('td').eq(2 * i + 1).text().replace(/\r?\n/g, '');
-          memberArray.push([department, name]);
-        }
-      
-        while(status){
-          status = false;
-          memberArray = shuffle(memberArray);
-          copyArray = memberArray.concat();
-          for(var i = 0; i < group; i++){
-            groupArray[i] = copyArray.splice(0, Math.ceil(copyArray.length / (group - i)));
-            groupArray[i].sort();
-          }
-      
-          loop:
-          for(var i = 0; i < group; i++){
-            for(var j = 0; j < groupArray[i].length - 1; j++){
-              if(groupArray[i][j][0] != "" && groupArray[i][j][0] == groupArray[i][j + 1][0]){
-                status = true;
-                break loop;
-              }
-            }
-          }
-        }
-      
-        for(var i = 0; i < groupArray.length; i++){
-          for(var j = 0; j < groupArray[i].length; j++){
-            $('ul').eq(i).children('.shuffle-area').eq(j).text(groupArray[i][j][1]);
-          }
-          if(j < $('ul').eq(i).children('.shuffle-area').length){
-            $('ul').eq(i).children('.shuffle-area').eq(j).text('　');
+  function stop(){
+    clearInterval(roulette);
+    var status = true;
+    var group = parseInt(document.getElementById('group').value);
+    var memberArray = [];
+    var copyArray = [];
+    var groupArray = new Array(group);
+    var row = $('#tbody').children().length;
+  
+    for(var i = 0; i < row; i++){
+      var name = $('#tbody').find('td').eq(2 * i).text();
+      var department = $('#tbody').find('td').eq(2 * i + 1).text().replace(/\r?\n/g, '');
+      memberArray.push([department, name]);
+    }
+  
+    while(status){
+      status = false;
+      memberArray = shuffle(memberArray);
+      copyArray = memberArray.concat();
+      for(var i = 0; i < group; i++){
+        groupArray[i] = copyArray.splice(0, Math.ceil(copyArray.length / (group - i)));
+        groupArray[i].sort();
+      }
+  
+      loop:
+      for(var i = 0; i < group; i++){
+        for(var j = 0; j < groupArray[i].length - 1; j++){
+          if(groupArray[i][j][0] != "" && groupArray[i][j][0] == groupArray[i][j + 1][0]){
+            status = true;
+            break loop;
           }
         }
       }
-      
-      function shuffle(array) {
-        for (let i = 0; i < array.length; i++) {
-          let rand = Math.floor(Math.random() * (i + 1));
-          [array[i], array[rand]] = [array[rand], array[i]]
-        }
-        return array;
+    }
+  
+    for(var i = 0; i < groupArray.length; i++){
+      for(var j = 0; j < groupArray[i].length; j++){
+        $('ul').eq(i).children('.shuffle-area').eq(j).text(groupArray[i][j][1]);
       }
+      if(j < $('ul').eq(i).children('.shuffle-area').length){
+        $('ul').eq(i).children('.shuffle-area').eq(j).text('　');
+      }
+    }
+  }
+  
+  function shuffle(array) {
+    for (let i = 0; i < array.length; i++) {
+      let rand = Math.floor(Math.random() * (i + 1));
+      [array[i], array[rand]] = [array[rand], array[i]]
+    }
+    return array;
+  }
